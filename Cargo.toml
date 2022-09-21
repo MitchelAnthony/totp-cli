@@ -1,0 +1,23 @@
+[package]
+name = "totp"
+version = "0.1.0"
+edition = "2021"
+authors = ["Mitchel Vroege <mitchel.vroege@2066d.nl>"]
+license = "MIT OR Apache-2.0"
+description = "Cli totp generator"
+readme = "README.md"
+homepage = "https://github.com/MitchelAnthony/totp-cli"
+repository = "https://github.com/MitchelAnthony/totp-cli"
+keywords = ["cli", "totp", "2fa"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+anyhow = "1.0"
+base32 = "0.4.0"
+clap = { version = "3.0", features = ["derive"] }
+hmac = "0.12.1"
+sha-1 = "0.10.0"
+
+[profile.release]
+strip = "debuginfo"
+
