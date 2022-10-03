@@ -35,7 +35,7 @@ fn main() -> anyhow::Result<()> {
         bail!("Either --secret or --auth-url must be given.");
     }
 
-    println!("{}", calculate_totp(&secret));
+    println!("{}", calculate_totp(&secret, None));
 
     Ok(())
 }
