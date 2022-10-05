@@ -1,7 +1,7 @@
 use anyhow::bail;
-use base32::Alphabet;
 use clap::Parser;
 use totp::calculate_totp;
+use totp::totp_config::TotpConfig;
 use url::Url;
 
 #[derive(Debug, Parser)]
@@ -18,19 +18,13 @@ struct Cli {
 fn main() -> anyhow::Result<()> {
     let args = Cli::parse();
 
-    let secret: Vec<u8>;
+    let secret: TotpConfig;
     if let Some(arg_secret) = args.secret {
-        secret = base32::decode(Alphabet::RFC4648 { padding: false }, &arg_secret).unwrap();
+        secret = TotpConfig::from(arg_secret.as_str());
     } else if let Some(auth_url) = args.auth_url {
+        // TODO Should this be handled in the lib?
         let otp_auth_url = Url::parse(&auth_url)?;
-        let mut query_params = otp_auth_url.query_pairs();
-        let otp_secret = query_params
-            .find(|(key, _)| key == "secret")
-            .unwrap()
-            .1
-            .clone();
-
-        secret = base32::decode(Alphabet::RFC4648 { padding: false }, &otp_secret).unwrap();
+        secret = TotpConfig::from(&otp_auth_url);
     } else {
         bail!("Either --secret or --auth-url must be given.");
     }
