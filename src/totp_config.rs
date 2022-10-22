@@ -1,12 +1,16 @@
 use base32::Alphabet;
 use url::Url;
 
+/// TotpConfig
 #[non_exhaustive]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct TotpConfig {
+    /// The secrets in bytes
     pub secret: Vec<u8>,
     algorithm: String, // TODO Use enum?
+    /// The amount of digits the token should be (default 6)
     pub digits: u32,
+    /// The time period in seconds that a token is valid for (default 30)
     pub period: u64,
 }
 

@@ -1,10 +1,25 @@
+#![warn(rust_2018_idioms, missing_docs, missing_debug_implementations)]
+
+//! Crate to calculate a TOTP token
+//! # How To Use
+//! The easiest way to use this crate is with a base32 encoded secret string.  
+//!   
+//! First, create a `TotpConfig`:  
+//! ```TotpConfig::from(&base32_encoded_str, None);```  
+//!   
+//! Then feed the `TotpConfig` to the calculator function:  
+//! ```calculate_totp(&secret, None)```  
+//!   
+
 use hmac::{Hmac, Mac};
 use sha1::Sha1;
 use std::time::{SystemTime, UNIX_EPOCH};
 use totp_config::TotpConfig;
 
+/// totp_config module
 pub mod totp_config;
 
+/// Calculates the TOTP
 pub fn calculate_totp(totp: &TotpConfig, input_seconds: Option<u64>) -> String {
     let seconds_since_epoch: u64;
     if let Some(seconds) = input_seconds {
